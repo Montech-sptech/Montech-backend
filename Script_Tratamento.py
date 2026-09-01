@@ -1,8 +1,16 @@
 import pandas as pnd
 from datetime import datetime, timedelta
 import os
+import time
+
+
 
 caminhoCSV = "./csvs/dados.csv"
+execucoes = 0
+
+print("""\n========================================\n
+            Iniciando Leitura
+            \n========================================\n""")
 
 # Verifica se o arquivo existe antes de tentar ler para evitar erros na inicialização
 if not os.path.exists(caminhoCSV):
@@ -37,7 +45,7 @@ def CalcularDados():
         tempoPico = DataFrame['TimeStamp'][DataFrame['UsoCPU'] == picoCPU]
         print(f"Pico da CPU: {picoCPU}% registrado em {tempoPico.iloc[0]}")
     else:
-         print("Sem medidas de CPU nas últimas 2 horas.")
+        print("Sem medidas de CPU nas últimas 2 horas.")
 
     # 3. Média do uso do Disco (Últimos 12 minutos)
     tempo = 12
@@ -49,6 +57,9 @@ def CalcularDados():
         print(f"Média do disco nos últimos {tempo} minutos: {mediaDisco:.1f}%")
     else:
         print(f"Sem medidas de disco nos últimos {tempo} minutos.")
+    print("""\n========================================\n
+            Encerrando Leitura
+                \n========================================\n""")
 
 TratarTimeStamp()
 CalcularDados()
