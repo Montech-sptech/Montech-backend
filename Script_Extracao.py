@@ -3,12 +3,18 @@ from datetime import datetime
 import os
 import psutil
 import socket
+import time
+
+print("""\n========================================\n
+            Iniciando Escrita
+            \n========================================\n""")
+
+execucoes = 0
 
 def coletarMetricas():
     # 1. Identificação do Servidor 
     hostname_atual = socket.gethostname()
     
-
     uso_ram = psutil.virtual_memory().percent
     uso_cpu = psutil.cpu_percent(interval=1)
     uso_disco = psutil.disk_usage('/').percent
@@ -26,7 +32,6 @@ def coletarMetricas():
     # Criação do DataFrame
     df_Novo = pnd.DataFrame(resultados)
 
-    # 4. Carga 
     caminhoCSV = "./csvs/dados.csv"
     
     # Cria a pasta automaticamente caso ela não exista
@@ -42,8 +47,15 @@ def coletarMetricas():
         header=not arquivoExiste,
         encoding='utf-8'
     )
+    global execucoes
+    execucoes += 1
 
     print(f"[{timestamp_atual}] Coleta salva com sucesso | Servidor: {hostname_atual}")
 
 if __name__ == "__main__":
-    coletarMetricas()
+    while (execucoes < 100):
+        time.sleep(5)
+        coletarMetricas()
+    print("""\n========================================\n
+            Encerrando Escrita
+            \n========================================\n""")
